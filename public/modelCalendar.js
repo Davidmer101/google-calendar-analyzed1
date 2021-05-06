@@ -11,8 +11,8 @@ let neutralList = ['life'];
 let destructiveList = ['entertainment'];
 let weeklyData = {};
 let dailyData = {};
-const starterURL = 'http://localhost:5000/' 
-// const starterURL = 'https://google-calendar-analyzer.herokuapp.com/'
+// const starterURL = 'http://localhost:5000/' 
+const starterURL = 'https://google-calendar-analyzer.herokuapp.com/'
 class ModelCalendar {
   upComingEvents = upComingEvents;
   daysToMonthcounter = daysToMonthcounter;
