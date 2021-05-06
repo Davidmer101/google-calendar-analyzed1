@@ -61,7 +61,7 @@
 
 }
 #firstRead {
-  margin-top: 15%;
+  margin-top: auto;
 }
 #firstColumn {
     margin: auto;
@@ -108,7 +108,7 @@ input[type=text], input[type=password] {
   }
 
   #user-login {
-    margin-top: 15%;
+    margin-top: auto;
   }
   .loginbtn {
     width: 100%;
@@ -185,7 +185,7 @@ input[type=text], input[type=password] {
   }
 
   #authorize-view {
-    margin: 25% auto 15% auto; /* 25% from the top, 15% from the bottom and centered */
+    margin: 20% auto 15% auto; /* 25% from the top, 15% from the bottom and centered */
     width: 80%; /* Could be more or less, depending on screen size */
     color: yellow;
   }

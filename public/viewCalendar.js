@@ -38,7 +38,9 @@ class ViewCalendar {
           document.getElementById('dashBoard').style.display = 'none';
           break;
         case 'loggedIn':
-          this.authorizationView(status.username);
+          // this.authorizationView(status.username); used to be
+          // break;
+          document.getElementById('authorize_button').click();
           break;
         case 'notLoggedIn':
           this.LogInFailed();
@@ -52,6 +54,8 @@ class ViewCalendar {
        if(selection.selected == 'daily') {
          this.dailyDashBoardView(selection.dayId, selection.data);
        } else if (selection.selected == 'weekly') {
+         document.getElementById('report').style.visibility = 'visible';
+         document.getElementById('daily-button').style.visibility = 'visible';
          this.weeklyDashBoardView(selection.weekId, selection.data);
        } else if(selection.selected = 'monthly') {
          this.monthlyDashBoardView(selection.data);

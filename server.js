@@ -14,7 +14,6 @@ app.use(expressSession({
     name: "comp426SessionCookie",
     secret: "express session secret",
     resave: false,
-    duration: 24 * 60 * 60 * 1000,
     saveUninitialized: false
 }));
 
