@@ -263,10 +263,10 @@ google.charts.setOnLoadCallback(
           subtitle: 'in hours and percentage'
         },
         chartArea: {
-          left: '2%'
+          left: '13%'
         },
         legend: {position: 'top', maxLines: 2},
-        width: 1250,
+        width: 'auto',
         height: 500,
         colors: ['lightblue', 'brown', 'darkblue', 'green', 'orange', 'lightgray'],
       };
@@ -340,7 +340,7 @@ google.charts.setOnLoadCallback(
         bar: { groupWidth: '75%' },
         chartArea: {
           top: '20%',
-          bottom: '20%',
+          bottom: '15%',
           left: '3%'
         },
         vAxis: {
