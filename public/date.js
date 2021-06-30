@@ -171,6 +171,7 @@ function oneWeek(date) {
     let weekStartDate = new Date(date);
     let weekEndDate = new Date(date);
     week.weekDate();
+    
     let weekBegins = validityCheck(week, week.weekStartDate);
     let weekEnds = validityCheck(week, week.weekEndDate);
     weekStartDate.setDate(weekBegins);
@@ -178,14 +179,24 @@ function oneWeek(date) {
     weekStartDate.setMinutes(0)
     weekStartDate.setSeconds(0)
     weekEndDate.setDate(weekEnds);
-    if(week.getDate() > week.weekEndDate ) {
 
+    if(week.weekStartDate < week.weekEndDate) {
+        weekStartDate.setMonth(week.getMonth())
+        weekEndDate.setMonth(week.getMonth())
+    } else {
+        weekStartDate.setMonth(week.getMonth())
         weekEndDate.setMonth(week.getMonth() + 1)
     }
+    //two scenario ex 1 -> 8 or 29 -> 3
+    
+    // if(week.getDate() > week.weekEndDate ) {
 
-    if(week.weekStartDate > week.weekEndDate) {
-        weekStartDate.setMonth(week.getMonth() - 1)
-    }
+    //     weekEndDate.setMonth(week.getMonth() + 1)
+    // }
+
+    // if(week.weekStartDate > week.weekEndDate) {
+    //     weekStartDate.setMonth(week.getMonth() - 1)
+    // }
     weekEndDate.setHours(23);
     weekEndDate.setMinutes(59);
     weekEndDate.setSeconds(59);
