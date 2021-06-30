@@ -131,7 +131,7 @@ function updateDate(currentDate, shift) {
 }
 
 function daysInAMonth (month) {
-    let longMonths = ('0, 2, 3, 6, 7, 9, 11')
+    let longMonths = ('0, 2, 4, 6, 7, 9, 11')
     if(longMonths.includes(month.toString())) {
         return 31;
     } else if(month == 2) {
