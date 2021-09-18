@@ -1,4 +1,29 @@
-Given:
-** startTime = 
-** endTime = 
-** duration = 
+working with tables assuming table filled
+1. By calendar
+* Weekly expense by calendar: Life 96, Work 12, Education 10, Entertainment 25...
+* Daily expense by calendar: Life 14, Work 5, Education 2, Entertainment 32 ...
+* Montly expense by calendar: Life 153, Work 100, Education 128, Entertainment 122...
+2. For each calendar
+* weekly, daily, monthly: 
+** Life: Family: 12, Sleep: 25, Excercise: 20...
+** Entertainment: Movies: 20, Surfing - chat: 23, 
+
+*** What Data Structure? 
+* can you take the section of the data using query
+* how to connect query with your program
+
+TIME TUTORIAL:
+* exchanging between the two timezones
+
+* How do you send it to back end
+* How do you store it in back end
+* How do you request it from Front end
+* How do you send it from back end
+* react? 
+*** working on front end without beautifying
+*** incorporate google calendar interaction on react
+***** print list of calendars
+
+// to check
+* Updatedate changes the date!!!
+So updateDate (new Date()) kinds of fixes that

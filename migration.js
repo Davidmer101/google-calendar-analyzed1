@@ -2,14 +2,17 @@ import sqlite3 from 'sqlite3'
 const db = new sqlite3.Database('./db.sqlite')
 
 db.serialize (function() {
-    db.run('DROP TABLE IF EXISTS Weeks')
-    db.run('CREATE TABLE IF NOT EXISTS `Weeks` ( ' +
+    db.run('DROP TABLE IF EXISTS Records')
+    db.run('CREATE TABLE IF NOT EXISTS `Records` ( ' +
     '`id` TEXT NOT NULL, ' +
-    '`cal1` INTEGER ,  ' +
-    ' `cal2` INTEGER , ' +
-    ' `cal3` INTEGER , ' +
-    ' `cal4` INTEGER , ' +
-    ' `cal5` INTEGER , ' +
+    '`event` TEXT ,  ' +
+    ' `startTime` TEXT , ' +
+    ' `endTime` TEXT , ' +
+    ' `calendar` TEXT , ' +
+    ' `description` TEXT , ' +
+    ' `duration` TEXT , ' +
+    ' `weekNum` TEXT , ' +
+    ' `monthNum` TEXT , ' +
     // ' `username` TEXT NOT NULL, ' +
     ' PRIMARY KEY (`id`) )' );
 

@@ -6,7 +6,7 @@ let db = new sqlite3.Database('./tutorialdb.sqlite')
 
 
 db.serialize(function() {
-  db.run('DROP TABLE IF EXISTS month')
+  // db.run('DROP TABLE IF EXISTS month')
   db.run("CREATE TABLE IF NOT EXISTS month (eventName TEXT, startTime TEXT, endTime TEXT, calendar TEXT, duration REAL )");
 
   var stmt = db.prepare("INSERT INTO month VALUES (?,?, ?, ?, ?)");
@@ -51,7 +51,7 @@ db.serialize(function() {
         console.log(row.calendar, row.duration)
   });
 //   db.run()
-});
+}); 
 
 db.close();
 
@@ -63,3 +63,9 @@ function duration(time1, time2) {
 }
 
 //
+class Calendar {
+  constructor(name) {
+    this.name = name
+  }
+}
+

@@ -11,8 +11,8 @@ let neutralList = ['life'];
 let destructiveList = ['entertainment'];
 let weeklyData = {};
 let dailyData = {};
-// const starterURL = 'http://localhost:5000/' 
-const starterURL = 'https://google-calendar-analyzer.herokuapp.com/'
+const starterURL = 'http://localhost:5000/' 
+// const starterURL = 'https://google-calendar-analyzer.herokuapp.com/'
 class ModelCalendar {
   upComingEvents = upComingEvents;
   daysToMonthcounter = daysToMonthcounter;
@@ -154,7 +154,7 @@ class ModelCalendar {
       for(let i = 0; i< calendars.length; i++) {
           let calendar = calendars[i];
           calendarList.push(calendar.summary)
-          this.weeklyEvents(calendar.summary, calendar.id);
+          // this.weeklyEvents(calendar.summary, calendar.id);
           this.dailyEvents(calendar.summary, calendar.id);
         }
       let to5 = 0;
@@ -185,15 +185,24 @@ class ModelCalendar {
    * @param {*} calId 
    */
   async dailyEvents(calName, calId) {
-    let firstDate = monthDates().week4.weekStartDate;
-    firstDate.oneDay();
-    this.events('day28', calName, calId, firstDate.dayStart.toISOString(), firstDate.dayEnd.toISOString())
+    let today = new Date()
+    // let todayOffset =  today.getDay()
+    // let toAdd = 6 - todayFromEndOfWeek
+    let thisWeekEnds = weekEnds(today)
+    let sixMonthsAgo = updateDate(new Date(), -180)
+    let SixMonthsAgoWeekStarted = weekStarts(sixMonthsAgo)
+    this.events('day', calName, calId, SixMonthsAgoWeekStarted.toISOString(), thisWeekEnds.toISOString())
 
-    for(let i = 27; i > 0; i--) {
-      updateDate(firstDate, 1).oneDay(); 
-      this.events(`day${i}`, calName, calId, firstDate.dayStart.toISOString(), firstDate.dayEnd.toISOString())
-    }
-    let lastDate = monthDates().week1.weekEndDate;
+    
+    // let firstDate = monthDates().week4.weekStartDate;
+    // firstDate.oneDay();
+    // this.events('day28', calName, calId, firstDate.dayStart.toISOString(), firstDate.dayEnd.toISOString())
+
+    // for(let i = 27; i > 0; i--) {
+    //   updateDate(firstDate, 1).oneDay(); 
+    //   this.events(`day${i}`, calName, calId, firstDate.dayStart.toISOString(), firstDate.dayEnd.toISOString())
+    // }
+    // let lastDate = monthDates().week1.weekEndDate;
     
   }
 /**
@@ -315,7 +324,10 @@ class ModelCalendar {
           // alert('event start date: ' + eventStartDate.toLocaleDateString())
           // alert('addingtoDailyData with parameters: ' + timeId + ' ' + calName + ' ' + eventDuration)
         }
-        this.addToDailyData(timeId, calName, eventDuration);
+        // this.addToDailyData(timeId, calName, eventDuration);
+        let weekNum = eventStartDate.getDay()
+        let monthNum = eventEndDate.getMonth()
+        this.addToDailyData(event.summary, eventStartDate, eventEndDate, calName, event.description, eventDuration, weekNum, monthNum);
       }
 
       
@@ -332,18 +344,20 @@ class ModelCalendar {
  * @param {*} calName 
  * @param {*} eventDuration 
  */
- addToDailyData(dayName, calName, eventDuration) {
-   
-  
-  if (dailyData[dayName] == undefined) { // cal name is not defined
-    dailyData[dayName] = {'id': dayName};
-  }
-  // eslint-disable-next-line eqeqeq
-  if (dailyData[dayName][calName] == undefined) { // if event is not already included, include it
-    dailyData[dayName][calName] = eventDuration;
-  } else { // if alraedy included sum the new duration to the old one
-    dailyData[dayName][calName] += eventDuration;
-  }
+ addToDailyData(eventName, startTime , endTime, calName, description, duration, weekNum, monthNum) {
+ console.log("eventName, startTime , endTime, calName, description, duration, weekNum, monthNum \n")
+ console.log(eventName, startTime , endTime, calName, description, duration, weekNum, monthNum)
+ this.sendPost(eventName, startTime , endTime, calName, description, duration, weekNum, monthNum)
+
+  // if (dailyData[dayName] == undefined) { // cal name is not defined
+  //   dailyData[dayName] = {'id': dayName};
+  // }
+  // // eslint-disable-next-line eqeqeq
+  // if (dailyData[dayName][calName] == undefined) { // if event is not already included, include it
+  //   dailyData[dayName][calName] = eventDuration;
+  // } else { // if alraedy included sum the new duration to the old one
+  //   dailyData[dayName][calName] += eventDuration;
+  // }
  }  
   /**
  * populate @weeklyData @object  {weekName : {cal1: durations added, cal2: duration2added}...}
@@ -492,20 +506,23 @@ async sendToServerLogIn (form) {
       
 }
 
- async sendPost(week){
+ async sendPost(eventName, startTime , endTime, calName, description, duration, weekNum, monthNum){
   try {
-   let calendar = calendarList.filter((calName) => {return calName != "weekid"}) 
+  //  let calendar = calendarList.filter((calName) => {return calName != "weekid"}) 
    let result = await axios ({
      method: 'post',
      url: `${starterURL}api/weeks/`,
      data: {
-         "week": {
-             "id": week['id'],
-             "cal1": week[calendar[0]],
-             "cal2": week[calendar[1]],
-             "cal3": week[calendar[2]],
-             "cal4": week[calendar[3]],
-             "cal5": week[calendar[4]]
+         "record": {
+             "id": 'placeHolder',
+             "eventName": eventName,
+             "startTime": startTime,
+             "endTime": endTime,
+             "calName": calName,
+             "description": description,
+             "duration" : duration,
+             "weekNum" : weekNum,
+             "monthNum" : monthNum
          }
      }
  })
