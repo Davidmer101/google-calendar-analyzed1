@@ -38,8 +38,29 @@ Date.prototype.oneDay = function () {
 }
 
 /**
- * ex let d = new(Date).myDay
- * d is Sun 15
+ * 
+ * @param {a date} date 
+ * @returns {a date} with it's first hour of the day 
+ * Example:  give a date give me 12:00:00 am 
+ */
+function dayStarts (date){
+    date.oneDay()
+    return date.dayStart
+}
+
+/**
+ * 
+ * @param {a date} date 
+ * @returns {a date} with it's first hour of the day 
+ * Example:  give a date give me 11:59:59 of that date 
+ */
+ function dayEnds (date){
+    date.oneDay()
+    return date.dayEnd
+}
+/**
+ * 
+ * @returns {String} Sun 12
  */
 Date.prototype.myDay = function () {
     if(this.getDay() == 0) {return `Sun ${this.getDate()} `}
@@ -52,7 +73,7 @@ Date.prototype.myDay = function () {
 }
 
 /**
- * when called on a date, it gives the date ex 15
+ * when called on a date, it gives the date ex Date with date 15
  * @weekStart ex Sun 14
  * @weekEnd ex Sat 20
  */
@@ -65,7 +86,9 @@ Date.prototype.weekDay = function () {
     if(this.getDay() == 5) {this.weekStart = `Sun ${validityCheck(this,this.getDate()-5)}`, this.weekEnd = `Sat ${validityCheck(this,this.getDate() + 1)}`}
     if(this.getDay() == 6) {this.weekStart = `Sun ${validityCheck(this,this.getDate()-6)}`, this.weekEnd = `Sat ${this.getDate()}`}
 }
-
+/**
+ * month number to three leters monthName {string} converter
+ */
 Date.prototype.myMonth = function() {
     if (this.getMonth() == 0){this.monthName = "Jan"};
     if (this.getMonth() == 1){this.monthName = "Feb"};
@@ -81,7 +104,9 @@ Date.prototype.myMonth = function() {
     if (this.getMonth() == 11){this.monthName = "Dec"};
   };
 /**
- * for each date @weekStartDate is the suday of that week 
+ * called on a date
+ * @returns {number} date of that day
+ * for each date @weekStartDate is the Sunday of that week 
  * and @weekEndDate is the saturday of that week 
  */
 
@@ -94,6 +119,8 @@ Date.prototype.weekDate = function () {
     if(this.getDay() == 5) {this.weekStartDate = validityCheck(this,this.getDate()-5), this.weekEndDate = validityCheck(this, this.getDate() + 1)}
     if(this.getDay() == 6) {this.weekStartDate = validityCheck(this,this.getDate()-6), this.weekEndDate =  this.getDate() }
 }
+
+
 
 
 function timeZone(string) {
@@ -117,7 +144,7 @@ let date10 = new Date();
 updateDate(date1, 1);
 /**
  * @param {date, number}
- * @return {the new date shifted by the number} 
+ * @return {date} the new date shifted by the number 
  * example: updateDate(today, 1) gives you the next day
  */
 function updateDate(currentDate, shift) {
@@ -130,6 +157,11 @@ function updateDate(currentDate, shift) {
     return currentDate; //updated date
 }
 
+/**
+ * number days in a month
+ * @param {number} month 
+ * @returns {number} days in a month
+ */
 function daysInAMonth (month) {
     let longMonths = ('0, 2, 4, 6, 7, 9, 11')
     if(longMonths.includes(month.toString())) {
@@ -164,6 +196,8 @@ function validityCheck (date, day) {
 /**
  * given a date, gives back an object of weekstart date and 
  * week end date of that includes the given date.
+ * @param {date} 
+ * @return {Date} start and end date of the week the {input date} is in
  * ex: oneWeek(sun 11/15) gives 11/15 and 11/21(22)
  */
 function oneWeek(date) {
@@ -204,6 +238,28 @@ function oneWeek(date) {
 
 }
 
+/**
+ * week starting time
+ * @param {Date} date 
+ * @returns {Date} week starting time
+ */
+function weekStarts(date){
+    let weekEdges = oneWeek(date)
+    return weekEdges.weekStartDate
+    
+}
+
+/**
+ * week ending time
+ * @param {Date} date 
+ * @returns {Date} week ending time
+ */
+ function weekEnds(date){
+    let weekEdges = oneWeek(date)
+    return weekEdges.weekEndDate
+    
+}
+
 
 /**
  * returns start date and end date of week1 (current week), week2 (week before), week3, week 4
@@ -214,6 +270,7 @@ function oneWeek(date) {
  *      "week4":{"weekStartDate":"2020-12-26T08:00:00.855Z","weekEndDate":"2021-01-03T07:59:59.855Z"}}
  * @returns {object} {week1: @function oneweek(onCurrentWeek), week: @function oneWeek(ontheweekBefore)}
  */
+
 function monthDates () {
     let week1Date = new Date();
     let week1 = oneWeek(week1Date);
@@ -257,3 +314,10 @@ function sortObjectsByKey (object) {
 //   }
 
 
+// Given a day give me the end of week day Saturday 11:59:59 and six months ago Sunday 12:00:00
+let d = new Date()
+
+console.log(`starts at: ${weekStarts(d)} and \nEnds at: ${weekEnds(d)}`);
+let t = updateDate(new Date(), -180)
+console.log(t)
+console.log(`starts at: ${weekStarts(t)} and \nEnds at: ${weekEnds(t)}`);
