@@ -180,7 +180,7 @@ class ModelCalendar {
     return returnedObje;
   }
   /**
-   * 
+   * request one month worth of data
    * @param {*} calName 
    * @param {*} calId 
    */

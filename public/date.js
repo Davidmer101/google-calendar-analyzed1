@@ -315,9 +315,35 @@ function sortObjectsByKey (object) {
 
 
 // Given a day give me the end of week day Saturday 11:59:59 and six months ago Sunday 12:00:00
-let d = new Date()
+let today = new Date()
 
-console.log(`starts at: ${weekStarts(d)} and \nEnds at: ${weekEnds(d)}`);
-let t = updateDate(new Date(), -180)
-console.log(t)
-console.log(`starts at: ${weekStarts(t)} and \nEnds at: ${weekEnds(t)}`);
+// console.log(`starts at: ${weekStarts(today)} and \nEnds at: ${weekEnds(today)}`);
+// let t = updateDate(new Date(), -180)
+// console.log(t)
+// console.log(`starts at: ${weekStarts(t)} and \nEnds at: ${weekEnds(t)}`);
+
+// starting today print the last 30 days 
+// starting 12:00:00 am of that day to 11:59:59 of that day
+// ex: date: x/x/x start 
+let firstDate = monthDates().week4.weekStartDate;
+firstDate.oneDay();
+console.log(firstDate.dayStart.toISOString())
+
+
+
+let dayStart = dayStarts(today)
+console.log(dayStart.toISOString())
+let dayEnd = dayEnds(today)
+
+
+for (let i = 0; i<=30; i++) {
+    let today = new Date();
+    let dayBefore = updateDate(today, -i);
+    console.log(dayBefore.toString())
+    let dayStart = dayStarts(dayBefore)
+    console.log(dayStart.toString())
+    let dayEnd = dayEnds(dayBefore)
+    console.log(dayEnd.toString())
+    console.log(".........................")
+
+}
