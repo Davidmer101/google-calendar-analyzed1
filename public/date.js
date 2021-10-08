@@ -325,25 +325,17 @@ let today = new Date()
 // starting today print the last 30 days 
 // starting 12:00:00 am of that day to 11:59:59 of that day
 // ex: date: x/x/x start 
-let firstDate = monthDates().week4.weekStartDate;
-firstDate.oneDay();
-console.log(firstDate.dayStart.toISOString())
 
+// for (let i = 0; i<=30; i++) {
+//     let today = new Date();
+//     let dayBefore = updateDate(today, -i);
+//     console.log(dayBefore.toString())
+//     let dayStart = dayStarts(dayBefore)
+//     console.log(dayStart.toString())
+//     let dayEnd = dayEnds(dayBefore)
+//     console.log(dayEnd.toString())
+//     console.log(".........................")
+// }
 
+// event, startTime, endTime, calendar, desciption, duration, weekNum, monthNum, day
 
-let dayStart = dayStarts(today)
-console.log(dayStart.toISOString())
-let dayEnd = dayEnds(today)
-
-
-for (let i = 0; i<=30; i++) {
-    let today = new Date();
-    let dayBefore = updateDate(today, -i);
-    console.log(dayBefore.toString())
-    let dayStart = dayStarts(dayBefore)
-    console.log(dayStart.toString())
-    let dayEnd = dayEnds(dayBefore)
-    console.log(dayEnd.toString())
-    console.log(".........................")
-
-}

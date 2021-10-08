@@ -154,7 +154,6 @@ class ModelCalendar {
       for(let i = 0; i< calendars.length; i++) {
           let calendar = calendars[i];
           calendarList.push(calendar.summary)
-          this.weeklyEvents(calendar.summary, calendar.id);
           this.dailyEvents(calendar.summary, calendar.id);
         }
       let to5 = 0;
@@ -185,61 +184,11 @@ class ModelCalendar {
    * @param {*} calId 
    */
   async dailyEvents(calName, calId) {
-    let firstDate = monthDates().week4.weekStartDate;
-    firstDate.oneDay();
-    this.events('day28', calName, calId, firstDate.dayStart.toISOString(), firstDate.dayEnd.toISOString())
+    let dayAhead = updateDate(new Date(), 7);
+    let dayBehind = updateDate(new Date(), -30);
+    this.events('day', calName, calId, dayBehind.toISOString(), dayAhead.toISOString());
+  }
 
-    for(let i = 27; i > 0; i--) {
-      updateDate(firstDate, 1).oneDay(); 
-      this.events(`day${i}`, calName, calId, firstDate.dayStart.toISOString(), firstDate.dayEnd.toISOString())
-    }
-    let lastDate = monthDates().week1.weekEndDate;
-    
-  }
-/**
- * given calName and calID, it requests events week by week (total of 4 weeks)
- * by calling @events
- * @param {string} calName 
- * @param {number} calId 
- */
- 
-  async weeklyEvents (calName, calId) {
-    // console.log('weeklyEvents called events')
-    await this.events('week1', calName, calId, monthDates().week1.weekStartDate.toISOString(), monthDates().week1.weekEndDate.toISOString())
-    await this.events('week2', calName, calId, monthDates().week2.weekStartDate.toISOString(), monthDates().week2.weekEndDate.toISOString())
-    await this.events('week3', calName, calId, monthDates().week3.weekStartDate.toISOString(), monthDates().week3.weekEndDate.toISOString())
-    await this.events('week4', calName, calId, monthDates().week4.weekStartDate.toISOString(), monthDates().week4.weekEndDate.toISOString())
-    if(this.runOnce == 4) {
-      let author  = new ModelCalendar();
-      //delete whatever is there for NOW
-      try {
-        let result = await axios ({
-          method: 'delete',
-          url: `${starterURL}api/weeks/`
-      })
-      } catch (error) {
-      }
-      if(weeklyData.week1) {
-        this.sendToServer(this.sortWeeklyData(weeklyData["week1"]));
-      }
-      if(weeklyData.week2) {
-        this.sendToServer(this.sortWeeklyData(weeklyData["week2"]));
-      }
-      if(weeklyData.week3) {
-        this.sendToServer(this.sortWeeklyData(weeklyData["week3"]));
-      }
-      if(weeklyData.week4) {
-        this.sendToServer(this.sortWeeklyData(weeklyData["week4"]));
-      }
-      if(dailyData.day1) {
-        // alert('model: weeklyEvents: day1 ' + JSON.stringify(dailyData.day1))
-        this.dailyModel('day1'); //first page view
-      } else {
-        author.updateListeners(selectionListeners, {data: undefined, selected: 'daily', dayId: 'day1'})
-      }
-    }
-    this.runOnce ++;
-  }
 
 /**
  * for a given week, it adds up the hours for each calendar 
@@ -299,24 +248,10 @@ class ModelCalendar {
         } 
         checkEnd = true;
       } 
-
-      if(timeId.startsWith('week')) {
-        // if(timeId == 'week1' && calName == 'Life') {
-        //   console.log(' ');
-        //   console.log( `adding to weekly data ${timeId}, ${calName}, ${eventDuration}`)
-        //   console.log(' ');
-        // }
-         this.addToWeeklyData(timeId, calName, eventDuration);
-      } else if (timeId.startsWith('day')) {
-        if(timeId == 'day1') {
-          // alert('min date: ' + minDate.toLocaleString())
-          // alert('start date: ' + startDate.toLocaleString())
-          // alert('end date: ' + endDate.toLocaleString())
-          // alert('event start date: ' + eventStartDate.toLocaleDateString())
-          // alert('addingtoDailyData with parameters: ' + timeId + ' ' + calName + ' ' + eventDuration)
-        }
-        this.addToDailyData(timeId, calName, eventDuration);
-      }
+      console.log(event.summary + ':' + eventStartDate.toLocaleString() + ':' + eventEndDate.toLocaleString() + ':' + calName + ':' + 3 + ':' + 3)
+     
+      // this.addToDailyData(timeId, calName, eventDuration);
+    
 
       
      }
@@ -324,6 +259,7 @@ class ModelCalendar {
   
   } catch (error) {
     console.log(error)
+    alert('ERROR')
   }
  }
 /**
