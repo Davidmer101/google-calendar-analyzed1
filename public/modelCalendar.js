@@ -207,59 +207,52 @@ class ModelCalendar {
   //  console.log(`called with ${timeId}, ${calName}, ${new Date(minDate).toLocaleString()}, ${new Date(maxDate).toLocaleString()}`)
   try {
     let response = await gapi.client.calendar.events.list({
-      calendarId: calId,
-      showDeleted: false,
-      singleEvents: true,
-      orderBy: 'startTime',
-      timeZone: timeZone(new Date().toString()),
-      timeMin: minDate,
-      timeMax: maxDate
+      'calendarId': calId,
+      'singleEvents': true,
+      // 'orderBy': 'startTime',
+      'timeZone': timeZone(new Date().toString()),
+      'timeMin': minDate,
+      'timeMax': maxDate
+      
   });
+
   const events = response.result.items;
-  let checkStart = true;
-  let checkEnd = false;
-  let startDate = new Date(minDate);
-  let endDate = new Date(maxDate);
+  let requestFrom = new Date(minDate);
+  let requestUpTo = new Date(maxDate);
+  console.log('sleep requesting from: ' + requestFrom + ' upto ' + requestUpTo);
   events.forEach((event) => {
+    //  console.log(event.summary + ':' + new Date(event.start.dateTime).toLocaleString() + ':' + new Date(event.end.dateTime).toLocaleString() + ':' + calName + ':' + 3 + ':' + 3)
      if (event.summary !== undefined && !event.start.date) { // ignores undefined and all day events
       eventList.includes(event.summary)? 0 : eventList.push(event.summary);
-      let eventStartDate = new Date(event.start.dateTime);
-      let eventEndDate = new Date(event.end.dateTime);
-      let eventDuration =  timeBetween(eventStartDate, eventEndDate).hours
-      // if(calName === "Life" && timeId == 'week1') {
-      //   console.log( `eventStart Date: ${eventStartDate}, eventEndDate ${eventEndDate}, duration ${eventDuration}`)
-      // }
-      
-      //filter a day that is part of a different week 
-      if (checkStart && eventStartDate.toDateString() <= startDate.toDateString()) {
-        if(timeBetween(startDate, eventStartDate).minutes < -1) { // event start date is less than one minute the week start date
-              eventDuration = timeBetween(startDate, eventEndDate).hours
-              // if(timeId == 'week1' && calName == 'Life') {
-              //   console.log(`start time fix ${eventDuration}`) 
-              // }
-        } 
-        checkStart = false;
-      } else if (checkEnd || eventEndDate.toDateString() == endDate.toDateString()) {
-        if(timeBetween(endDate, eventEndDate).minutes > 1) {
-            eventDuration =  timeBetween(eventStartDate, endDate).hours 
-            // if(timeId == 'week1' && calName == 'Life') {
-            //   console.log(`end time fix ${eventDuration}`) 
-            // }
-        } 
-        checkEnd = true;
-      } 
-      console.log(event.summary + ':' + eventStartDate.toLocaleString() + ':' + eventEndDate.toLocaleString() + ':' + calName + ':' + 3 + ':' + 3)
-     
-      // this.addToDailyData(timeId, calName, eventDuration);
-    
+      let eventStartsAt = new Date(event.start.dateTime);
+      let eventEndsAt = new Date(event.end.dateTime);
+      let eventDuration =  timeBetween(eventStartsAt, eventEndsAt).hours
+      let dayEndsAt = (new Date(eventEndsAt))
+      dayEndsAt.setHours(11, 59, 59)
+      let dayStartsAt = (new Date(eventStartsAt));
+      dayStartsAt.setHours(0,0,0)
+      //if event goes to the next day break it into to events upto 11:59:59 and 12 after that
+      if (eventStartsAt.getDate() != eventEndsAt.getDate()) {
+        //seperate into two events 
+        console.log(event.summary + ':' + eventStartsAt.toLocaleString() + ':' + dayEndsAt.toLocaleString() + ':' + calName + ':' + 3 + ':' + 3)
+        console.log(event.summary + ':' + dayStartsAt.toLocaleString() + ':' + eventEndsAt.toLocaleString() + ':' + calName + ':' + 3 + ':' + 3)
+        weekNum1 = weekNumber(eventStartsAt)
+        weekNum2 = weekNumber(eventEndsAt)
+        monthNum1 = eventStartsAt.getMonth()
+        monthNum2 = eventEndsAt.getMonth()
 
+      } else {
+        weekNum = weekNumber(eventStartsAt)
+        monthNum = eventStartsAt.getMonth()
+        console.log(event.summary + ':' + eventStartsAt.toLocaleString() + ':' + eventEndsAt.toLocaleString() + ':' + calName + ':' + 3 + ':' + 3)
+      }
       
      }
   })
   
   } catch (error) {
     console.log(error)
-    alert('ERROR')
+    alert(error.message)
   }
  }
 /**

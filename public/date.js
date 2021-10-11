@@ -18,8 +18,9 @@ function timeBetween (date1, date2) {
     let minutes = ms/(1000*60);
     let hours = minutes/60;
     let days = hours/24;
+    let weeks = Math.floor(days/7);
     let years = days/365;
-    return {ms: ms, minutes: minutes, hours: hours, days: days, years: years};
+    return {ms: ms, minutes: minutes, hours: hours, days: days, weeks:weeks, years: years};
 }
 
 /**
@@ -325,17 +326,44 @@ let today = new Date()
 // starting today print the last 30 days 
 // starting 12:00:00 am of that day to 11:59:59 of that day
 // ex: date: x/x/x start 
+// let firstDate = monthDates().week4.weekStartDate;
+// firstDate.oneDay();
+// console.log(firstDate.dayStart.toISOString())
+
+
+
+// let dayStart = dayStarts(today)
+// console.log(dayStart.toISOString())
+// let dayEnd = dayEnds(today)
+
 
 // for (let i = 0; i<=30; i++) {
 //     let today = new Date();
-//     let dayBefore = updateDate(today, -i);
-//     console.log(dayBefore.toString())
-//     let dayStart = dayStarts(dayBefore)
-//     console.log(dayStart.toString())
-//     let dayEnd = dayEnds(dayBefore)
-//     console.log(dayEnd.toString())
+//     let anotherDay = updateDate(today, -i);
+//     console.log(anotherDay.toString())
+//     let dayStartsAt = dayStarts(anotherDay)
+//     console.log(dayStartsAt.toString())
+//     let dayEndsAt = dayEnds(anotherDay)
+//     console.log(dayEndsAt.toString())
 //     console.log(".........................")
+
 // }
 
-// event, startTime, endTime, calendar, desciption, duration, weekNum, monthNum, day
+/**
+ * given a date retunrs the week number starting from 0
+ * @param {Date Object} date 
+ * @returns {integer} week number
+ */
+function weekNumber (date) {
+    let yearStarts = new Date(date.getFullYear(), 0, 1, 0, 0)
+    let secondWeekStartsOn = secondWeekStarts(yearStarts)
+    yearStarts.setDate(secondWeekStartsOn)
+    let weekNum = timeBetween(yearStarts, date).weeks
+    return weekNum + 1 //week starts from 0, 1, 2...
+}
 
+
+
+function secondWeekStarts(date) {
+    return 8 - date.getDay()
+}
