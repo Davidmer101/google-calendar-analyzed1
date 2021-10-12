@@ -20,6 +20,19 @@ db.serialize (function() {
     ' `password` TEXT NOT NULL, ' +
     ' `email` TEXT, ' +
     ' PRIMARY KEY (`id`) )' );
-    
+
+    db.run('DROP TABLE IF EXISTS Records')
+    db.run('CREATE TABLE IF NOT EXISTS `Records` ( ' +
+    '`id` TEXT NOT NULL, ' +
+    '`eventName` TEXT ,  ' +
+    ' `startTime` TEXT , ' +
+    ' `endTime` TEXT , ' +
+    ' `calName` TEXT , ' +
+    ' `description` TEXT , ' +
+    ' `duration` TEXT , ' +
+    ' `weekNum` TEXT , ' +
+    ' `monthNum` TEXT , ' +
+    // ' `username` TEXT NOT NULL, ' +
+    ' PRIMARY KEY (`startTime`) )' );
     
 });

@@ -242,9 +242,11 @@ class ModelCalendar {
         monthNum2 = eventEndsAt.getMonth()
 
       } else {
-        weekNum = weekNumber(eventStartsAt)
-        monthNum = eventStartsAt.getMonth()
+        let weekNum = weekNumber(eventStartsAt)
+        let monthNum = eventStartsAt.getMonth()
         console.log(event.summary + ':' + eventStartsAt.toLocaleString() + ':' + eventEndsAt.toLocaleString() + ':' + calName + ':' + 3 + ':' + 3)
+        this.sendPost('day', event.summary, eventStartsAt, eventEndsAt, calName, event.description, eventDuration, weekNum, monthNum)
+
       }
       
      }
@@ -252,7 +254,7 @@ class ModelCalendar {
   
   } catch (error) {
     console.log(error)
-    alert(error.message)
+    alert('in events:' + error.message)
   }
  }
 /**
@@ -274,25 +276,7 @@ class ModelCalendar {
     dailyData[dayName][calName] += eventDuration;
   }
  }  
-  /**
- * populate @weeklyData @object  {weekName : {cal1: durations added, cal2: duration2added}...}
- * can be used to do calculations and show results
- * @param weekName week name
- * @param calName calendar name
- * @param eventDuration duration of event
- */
- async addToWeeklyData(weekName, calName, eventDuration) {
-  // eslint-disable-next-line eqeqeq
-  if (weeklyData[weekName] == undefined) { // cal name is not defined
-    weeklyData[weekName] = {"id": weekName};
-  }
-  // eslint-disable-next-line eqeqeq
-  if (weeklyData[weekName][calName] == undefined) { // if event is not already included, include it
-    weeklyData[weekName][calName] = eventDuration;
-  } else { // if alraedy included sum the new duration to the old one
-    weeklyData[weekName][calName] += eventDuration;
-  }
- }  
+  
   sortDailyData (dataObject) {
     if(Object.keys(dataObject).length != 0) {
       let obj  = {}
@@ -326,31 +310,7 @@ class ModelCalendar {
  * @example: given {id: 2, name: 'anderson', age: 23}
  * @returns {id: 2, age: 23, name: 'anderson'}
  */
- sortWeeklyData (dataObject) {
-  if(Object.keys(dataObject).length != 0) {
-    let obj  = {}
-    obj['id'] = dataObject['id'];
-    
-    let keys = calendarList
-    keys.sort();
-    keys.forEach((key) => {
-      if(key != 'weekid') {
-        if(dataObject[key] == undefined) {
-          obj[key] = 0;
-         } else {
-          obj[key] = dataObject[key];
-        }
-      }
-    })
-    if(keys.length < 5) {
-      for(let i = keys.length; i < 5; i++) {
-        obj[i] = 0; 
-      }
-    }
-    return obj;
-  }
-  
-}
+
 
 async sendToServerSignUp (form) {
   let author  = new ModelCalendar();
@@ -421,23 +381,24 @@ async sendToServerLogIn (form) {
       
 }
 
- async sendPost(week){
+ async sendPost(id, eventName, startTime, endTime, calName, description, duration, weekNum, monthNum ){
   try {
-   let calendar = calendarList.filter((calName) => {return calName != "weekid"}) 
    let result = await axios ({
      method: 'post',
-     url: `${starterURL}api/weeks/`,
+     url: `${starterURL}api/days/`,
      data: {
-         "week": {
-             "id": week['id'],
-             "cal1": week[calendar[0]],
-             "cal2": week[calendar[1]],
-             "cal3": week[calendar[2]],
-             "cal4": week[calendar[3]],
-             "cal5": week[calendar[4]]
-         }
+        "id": id,
+        "eventName": eventName,
+        "startTime": startTime,
+        "endTime": endTime,
+        "calName": calName,
+        "description": description,
+        "duration": duration,
+        "weekNum": weekNum,
+        "monthNum": monthNum
      }
  })
+ alert(JSON.stringify(result))
   } catch (error) {
   }
  }
