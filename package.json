@@ -1,7 +1,7 @@
 {
   "name": "google-calendar-analyzed1",
   "version": "1.0.0",
-  "description": "",
+  "description": "nodemon server.js // to run the program with nodemon",
   "main": "server.js",
   "type": "module",
   "scripts": {
@@ -19,6 +19,8 @@
   },
   "homepage": "https://github.com/Davidmer101/google-calendar-analyzed1#readme",
   "dependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-preset-react-app": "^3.1.2",
     "body-parser": "^1.19.0",
     "browser-sync": "^2.26.14",
     "consolidate": "^0.16.0",
@@ -29,6 +31,10 @@
     "morgan": "^1.10.0",
     "nodeman": "^1.1.2",
     "path": "^0.12.7",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
     "sqlite3": "^5.0.2"
-  }
+  },
+  "devDependencies": {},
+  "keywords": []
 }

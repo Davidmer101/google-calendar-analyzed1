@@ -31,8 +31,8 @@ db.serialize (function() {
     ' `description` TEXT , ' +
     ' `duration` TEXT , ' +
     ' `weekNum` TEXT , ' +
-    ' `monthNum` TEXT , ' +
+    ' `monthNum` TEXT ) ' );
     // ' `username` TEXT NOT NULL, ' +
-    ' PRIMARY KEY (`startTime`) )' );
+    // ' PRIMARY KEY ( `startTime`) )' );
     
 });

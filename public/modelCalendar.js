@@ -398,8 +398,9 @@ async sendToServerLogIn (form) {
         "monthNum": monthNum
      }
  })
- alert(JSON.stringify(result))
+//  alert(JSON.stringify(result))
   } catch (error) {
+    alert(error.message)
   }
  }
 
@@ -444,21 +445,25 @@ async sendToServerLogIn (form) {
   } 
  }
  async dailyModel (dayId) {
-  //  alert('in model calendar dailymodel with dayId: ' + dayId)
+   alert('in model calendar dailymodel with dayId: ' + dayId)
   let author  = new ModelCalendar();
-  //  try {
-  //   let result = await axios ({
-  //     method: 'get',
-  //     url: 'http://localhost:5000/api/weeks/',
-  //   })
+   try {
+    let result = await axios ({
+      method: 'get',
+      url: 'http://localhost:5000/api/days/',
+      params: {
+        startTime: 2, 
+        endTime: 3
+      }
+    })
   if(dailyData[dayId]) {
     author.updateListeners(selectionListeners, {data: this.sortDailyData(dailyData[dayId]), selected: 'daily', dayId: dayId})
   } else {
     author.updateListeners(selectionListeners, {data: undefined, selected: 'daily', dayId: dayId})
   }
-  // } catch (error) {
-  //   console.log(error)
-  // }
+  } catch (error) {
+    console.log(error.message)
+  }
  }
 //credit to W3
  autocomplete(text, list) {

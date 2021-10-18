@@ -1,4 +1,9 @@
 // eslint-disable-next-line no-unused-vars
+// import React from 'react';
+// import ReactDOM from 'react-dom';
+// React = require('react');
+// ReactDOM = require('react-dom');
+
 class ViewCalendar {
   constructor(model) {
     this.model = model;
